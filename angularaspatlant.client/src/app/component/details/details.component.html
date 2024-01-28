@@ -3,7 +3,7 @@
 
 <p *ngIf="loading">loading....</p>
 
-<p *ngIf="!completeLoad&&!loading">error with loading data, chek your server and <a href=" ">refresh</a> this page</p>
+<p *ngIf="!completeLoad&&!loading">error with loading data, chek your server and <a href="/details">refresh</a> this page</p>
 
 <div class="tableforms" *ngIf="completeLoad&&!loading">
   <div class="table-responsive">
@@ -22,19 +22,19 @@
       <tbody>
         <tr  *ngFor="let detail of details; trackBy: trackDetails">
           <td>{{ detail.id }}</td>
-          <td>{{ detail.item_code }}</td>
-          <td>{{ detail.item_name }}</td>
+          <td>{{ detail.itemCode }}</td>
+          <td>{{ detail.itemName }}</td>
           <td>{{ detail.count }}</td>
-          <td>{{ getStorekeeperName(detail.storeKeeper_id)}}</td>
-          <td>{{ getDate(detail.date_Create) }}</td>
-          <td>{{ getDate(detail.date_Delete) }}</td>
+          <td>{{ detail.storekeeper.fullName}}</td>
+          <td>{{ detail.dateCreate }}</td>
+          <td>{{ detail.dateDelete }}</td>
           
         </tr>
       </tbody>
     </table>
   </div>
   <div>
-    
+
     <div style="padding:10px">
       <label>Add detail</label><br />
       <table>
@@ -42,13 +42,13 @@
           <tr>
             <td>code</td>
             <td>
-              <input [(ngModel)]="detail.item_code" type="text" />
+              <input [(ngModel)]="detail.itemCode" type="text" />
             </td>
           </tr>
           <tr>
             <td>name</td>
             <td>
-              <input [(ngModel)]="detail.item_name" type="text" />
+              <input [(ngModel)]="detail.itemName" type="text" />
             </td>
           </tr>
           <tr>
@@ -60,16 +60,16 @@
           <tr>
             <td>storekeeper</td>
             <td>
-              <select [(ngModel)]="detail.storeKeeper_id">
+              <select [(ngModel)]="detail.storekeeperId">
                 <option value="">...</option>
-                <option *ngFor="let storekeeper of storekeepers; trackBy: trackStorekeepers"  value=" {{storekeeper.id}}">{{storekeeper.full_name}}</option>
+                <option *ngFor="let storekeeper of storekeepers" value="{{storekeeper.id}}">{{storekeeper.fullName}}</option>
               </select>
             </td>
           </tr>
           <tr>
             <td>date create</td>
             <td>
-              <input [(ngModel)]="detail.date_Create" type="date" />
+              <input [(ngModel)]="detail.dateCreate" type="date" />
             </td>
           </tr>
         </tbody>
@@ -80,6 +80,9 @@
       <label>Delete detail</label><br />
       <input type="number" [(ngModel)]="detail_id" placeholder="Detail id" />
       <button (click)="deleteDetail()">Delete</button>
+    </div>
+    <div>
+      <label [style]="messageStyle" style="font-size:18px">{{messageText}}</label>
     </div>
   </div>
 </div>

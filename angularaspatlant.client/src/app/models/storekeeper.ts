@@ -1,4 +1,7 @@
+import { IDetail } from "./detail";
+
 export interface IStorekeeper {
   id: number;
-  full_name: string;
+  fullName: string;
+  details: IDetail[];
 }

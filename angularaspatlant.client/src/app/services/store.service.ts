@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient,HttpHeaders } from "@angular/common/http";
 import { IDetail } from "../models/detail";
 import { Observable } from "rxjs";
 import { IStorekeeper } from "../models/storekeeper";
@@ -22,29 +22,21 @@ export class StoreService {
   }
 
   postDetail(detail: IDetail) {
-    console.log(detail);
-    this.http.post("api/store/detail", {
-      item_code: detail.item_code,
-      item_name: detail.item_name,
-      count: detail.count,
-      storeKeeper_id: detail.storeKeeper_id,
-      date_Create: detail.date_Create,
-    })
-      .subscribe();
+    return this.http.post("api/store/detail/", detail, { observe: 'response', headers: new HttpHeaders({ 'Content-Type': 'application/json' }) });
   }
 
-  postStorekeeper(name: string)  {
-    this.http.post("api/store/storekeeper/", { name: name }).subscribe();
+  postStorekeeper(storekeeper: IStorekeeper) {
+    return this.http.post("api/store/storekeeper/", storekeeper, { observe: 'response', headers: new HttpHeaders({ 'Content-Type': 'application/json' }) } );
 
   }
 
   deleteStorekeeper(id: number) {
-    this.http.delete("api/store/storekeeper/" + id).subscribe();
+    return this.http.delete("api/store/storekeeper/" + id, { observe: 'response' });
+    
   }
 
   deleteDetail(id: number) {
-    console.log("удаляем " + id)
-    this.http.delete("api/store/detail/" + id).subscribe();
+    return this.http.delete("api/store/detail/" + id, { observe: 'response' });
   }
   
 

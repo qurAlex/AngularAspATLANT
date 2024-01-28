@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientJsonpModule, HttpErrorResponse, HttpHeaderResponse, HttpResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { IStorekeeper } from '../../models/storekeeper';
 import { IDetail } from '../../models/detail';
@@ -14,44 +14,33 @@ import { StoreService } from '../../services/store.service';
 })
 export class StorekeepersComponent implements OnInit {
   public storekeepers: IStorekeeper[] = [];
-  public details: IDetail[] = [];
   loading = true;
   completeLoad = true;
   storekeeper_id = undefined;
-  storekeeper_fullname = "";
+  storekeeper: IStorekeeper = { id: 0, fullName: "", details: [] }
+  messageText="";
+  messageStyle = "";
 
-  constructor(private storeService: StoreService,) { }
+  constructor(private storeService: StoreService) { }
 
   ngOnInit() {
 
-    setInterval(() => this.getStorekeepers(), 1000);
-    setInterval(() => this.getDetails(), 1000);
+     this.getStorekeepers();
   }
-
-  getDetails() {
-    this.storeService.getDetails().subscribe(
-      (result) => {
-        this.details = result;
-        this.completeLoad = true;
-        this.loading = false;
-      },
-      (error) => {
-        console.error(error);
-        this.completeLoad = false;
-        this.loading = false;
-      }
-    );
-  }
+  
+  
 
   getStorekeepers() {
     this.storeService.getStrorekeepers().subscribe(
       (result) => {
         this.storekeepers = result;
         this.completeLoad = true;
+        this.loading = false;
       },
       (error) => {
         console.error(error);
         this.completeLoad = false;
+        this.loading = false;
       }
     );
   }
@@ -61,25 +50,30 @@ export class StorekeepersComponent implements OnInit {
   }
 
   postStorekeeper() {
-    if (this.storekeeper_fullname!="")
-    this.storeService.postStorekeeper(this.storekeeper_fullname);
-    this.storekeeper_fullname = "";
+    this.storeService.postStorekeeper(this.storekeeper)
+      .subscribe((response) => { this.succesfullMessage(); }, error => { this.errorMessage(); });
+    this.storekeeper.fullName = "";
   }
 
   getCount(id: number):number {
     let sum = 0;
-    this.details
-      .filter(n => n.storeKeeper_id == id)
-      .filter(n => Date.parse(n.date_Delete).toFixed() < Date.now.toString())
+    this.storekeepers.find(s => s.id == id)?.details
+      .filter(n => Date.parse(n.dateDelete!).toFixed() < Date.now.toString())
       .forEach(n => sum += n.count)
     return sum;
   }
 
   deleteStorekeeper() {
-    if (this.storekeeper_id != undefined && this.getCount(this.storekeeper_id) == 0)
-      this.storeService.deleteStorekeeper(this.storekeeper_id);
+    if (this.storekeeper_id != undefined)
+      this.storeService.deleteStorekeeper(this.storekeeper_id)
+        .subscribe((response) => { this.succesfullMessage(); }, error => { this.errorMessage(); });
+    else this.errorMessage();
     this.storekeeper_id = undefined;
   }
+
+  errorMessage() { console.log("eroor!!! error!!! error!!!"); this.messageText = "Oops, some error"; this.messageStyle = "color:red"; }
+
+  succesfullMessage() { console.log("good job"); this.getStorekeepers(); this.messageText = "Succesfully!"; this.messageStyle = "color:lightgreen"; }
 
   title = 'angularaspatlant.client.storekeepers';
 }

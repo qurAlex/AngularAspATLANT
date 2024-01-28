@@ -1,13 +1,23 @@
-﻿namespace AngularAspATLANT.Server.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AngularAspATLANT.Server;
+
+public partial class Detail
 {
-    public class Detail
-    {
-        public int id { get; set; }
-        public string item_code { get; set; }
-        public string item_name { get; set; }
-        public int count { get; set; }
-        public int storeKeeper_id { get; set; }
-        public DateTime date_Create { get; set; }
-        public DateTime? date_Delete { get; set; }
-    }
+    public int Id { get; set; }
+
+    public string ItemCode { get; set; } = null!;
+
+    public string ItemName { get; set; } = null!;
+
+    public int? Count { get; set; }
+
+    public int StorekeeperId { get; set; }
+
+    public DateOnly DateCreate { get; set; }
+
+    public DateOnly? DateDelete { get; set; }
+
+    public virtual Storekeeper Storekeeper { get; set; } = null!;
 }

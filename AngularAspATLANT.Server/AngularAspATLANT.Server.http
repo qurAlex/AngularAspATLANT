@@ -1,6 +1,6 @@
 @AngularAspATLANT.Server_HostAddress = http://localhost:5197
 
-GET {{AngularAspATLANT.Server_HostAddress}}/weatherforecast/
+GET {{AngularAspATLANT.Server_HostAddress}}/details/
 Accept: application/json
 
 ###

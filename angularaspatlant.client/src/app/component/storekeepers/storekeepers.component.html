@@ -3,7 +3,7 @@
 
 <p *ngIf="loading">loading....</p>
 
-<p *ngIf="!completeLoad&&!loading">error with loading data, chek your server and <a href=" ">refresh</a> this page</p>
+<p *ngIf="!completeLoad&&!loading">error with loading data, chek your server and <a href="/storekeepers">refresh</a> this page</p>
 
 <div class="tableforms" *ngIf="completeLoad&&!loading">
   <div class="table-responsive">
@@ -16,9 +16,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr  *ngFor="let storekeeper of storekeepers; trackBy: trackStorekeepers">
+        <tr *ngFor="let storekeeper of storekeepers; trackBy: trackStorekeepers">
           <td>{{ storekeeper.id }}</td>
-          <td>{{ storekeeper.full_name }}</td>
+          <td>{{ storekeeper.fullName }}</td>
           <td>{{ getCount(storekeeper.id) }}</td>
         </tr>
       </tbody>
@@ -28,13 +28,16 @@
 
     <div style="padding:10px">
       <label>Add storekeeper</label><br />
-      <input width="50" type="text" [(ngModel)]="storekeeper_fullname" placeholder="Full name" />
+      <input width="50" type="text" [(ngModel)]="storekeeper.fullName" placeholder="Full name" />
       <button (click)="postStorekeeper()">Add</button>
     </div>
     <div style="padding:10px">
       <label>Delete storekeeper</label><br />
       <input width="50" type="number" [(ngModel)]="storekeeper_id" placeholder="Storekeeper id" />
       <button (click)="deleteStorekeeper()">Delete</button>
+    </div>
+    <div>
+      <label [style]="messageStyle" style="font-size:18px">{{messageText}}</label>
     </div>
   </div>
 </div>

@@ -1,9 +1,13 @@
-﻿
-namespace AngularAspATLANT.Server.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AngularAspATLANT.Server;
+
+public partial class Storekeeper
 {
-    public class Storekeeper
-    {
-        public int id{ get; set; }
-        public string full_name { get; set; }
-    }
+    public int Id { get; set; }
+
+    public string FullName { get; set; } = null!;
+
+    public virtual ICollection<Detail> Details { get; set; } = new List<Detail>();
 }
